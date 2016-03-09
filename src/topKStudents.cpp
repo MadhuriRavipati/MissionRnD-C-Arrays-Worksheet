@@ -20,7 +20,46 @@ struct student {
 	char *name;
 	int score;
 };
+void swap(struct student *s, int i, int j) {
+	struct student t;
+	t = s[i];
+	s[i] = s[j];
+	s[j] = t;
+}
+void sort(struct student *s, int n){
+	int i, j;
+	for (i = 0; i < n; i++){
+		for (j = i; j < n; j++){
+			if (s[i].score < s[j].score)
+				swap(s, i, j);
+
+		}
+	}
+}
 
 struct student ** topKStudents(struct student *students, int len, int K) {
-	return NULL;
+	int i = 0, max = 0, x, j;
+	if (students == NULL || len == 0 || K <= 0)
+		return NULL;
+	if (K == 1){
+
+		for (i = 0; i < len; i++)
+		{
+			if (students[i].score > max){
+				max = students[i].score;
+				x = i;
+			}
+		}
+		struct student **topKstudents = (struct student**)calloc(K, sizeof(struct student));
+		topKstudents[0] = &students[x];
+		return topKstudents;
+	}
+	else
+	{
+		struct student **topKstudents = (struct student**)calloc(K, sizeof(struct student));
+		sort(students, len);
+		for (j = 0; j < K; j++)
+			topKstudents[j] = &students[j];
+		return topKstudents;
+	}
 }
